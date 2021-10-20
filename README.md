@@ -19,6 +19,6 @@ Identify Hashes\
 Convert Data Types\
 Finding Files Containing Strings\
 Fun witwh Shodan\
-Evilginx2 Auto Setup.\
+Evilginx2 Auto Setup.
 
 
