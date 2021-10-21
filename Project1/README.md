@@ -1,17 +1,12 @@
 # Project 1 - The Scope!
 
-**Scenario:** Congrats, your Penetration testing company Red Planet has landed an external assessment for Microsoft!\ 
-          &nbsp;&nbsp;&nbsp;&nbsp;Your point of contact has give you a few IP addresses for you to test. Like with any test you should\ 
-          &nbsp;&nbsp;&nbsp;&nbsp;always verify the scope given to you to make sure there wasn't a mistake.
+**Scenario:** Congrats, your Penetration testing company Red Planet has landed an external assessment for Microsoft! Your point of contact has give you a few IP addresses for you to test. Like with any test you should always verify the scope given to you to make sure there wasn't a mistake.
 
-**Beginner Task:** Write a script that will have the user input an IP address. The script should output the ownership\ 
-               &nbsp;&nbsp;&nbsp;&nbsp;and geolocation of the IP. The output should be presented in a way that is clean and organized in\ 
-               &nbsp;&nbsp;&nbsp;&nbsp;order to be added to your report.
+**Beginner Task:** Write a script that will have the user input an IP address. The script should output the ownership and geolocation of the IP. The output should be presented in a way that is clean and organized in order to be added to your report.
 
 **Intermediate Task:** Have the script read multiple IP addresses from a text file and process them all at once.
 
-**Expert Task:** Have the script read from a file containing both single IP addresses and CIDR notation,\ 
-             &nbsp;&nbsp;&nbsp;&nbsp;having it process it both types.
+**Expert Task:** Have the script read from a file containing both single IP addresses and CIDR notation, having it process it both types.
 
 Here are your IP addresses to check:\
 131.253.12.5\
