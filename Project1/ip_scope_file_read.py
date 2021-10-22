@@ -18,7 +18,7 @@ This file can also be imported as a module and contains the following functions:
 
 #!/usr/bin/env python3
 
-import sys
+import sys, traceback
 from os import strerror
 import ip_scope
 
@@ -34,8 +34,10 @@ def main(file_name):
         file.close()
     except IOError as e:
         print("I/O error occurred: ", strerror(e.errno))
-    except Exception as e:
-       print("Error", strerror(e.errno))
+    except Exception:
+        #For any other unexpected error
+        str = traceback.format_exc()
+        print(str)
        
 if __name__ == '__main__':
     num_args = len(sys.argv)

@@ -21,15 +21,22 @@ ip addresses read in from a file
 """
 
 #!/usr/bin/env python3
-import sys
+import sys, traceback
 from ipwhois import IPWhois
+from ipwhois.exceptions import IPDefinedError
 
 def main(ip_address):
 
     try:
         ownership, country, state, city, postal_code = get_ip_info(ip_address)
+    except IPDefinedError:
+        print("You entered an invalid or non public IP address")
+    except ValueError:
+        print(ip_address, 'is not a IPv4 or IPv6 address')
     except Exception:
-        sys.exit("You entered an invalid or non public IP address")
+        #For any other unexpected error
+        str = traceback.format_exc()
+        print(str)
     else:
         print_results(ip_address, ownership, country, state, city, postal_code)
     
