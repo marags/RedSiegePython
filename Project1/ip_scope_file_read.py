@@ -11,7 +11,7 @@ This script requires that 'ipwhois' be installed within the Python
 environment you are running this script in as the script ip_scope
 requires it.
 
-This file can also be importate as a module and contains the following functions:
+This file can also be imported as a module and contains the following functions:
 
         *main(ip_address) - the main function of the script
 """
@@ -34,7 +34,9 @@ def main(file_name):
         file.close()
     except IOError as e:
         print("I/O error occurred: ", strerror(e.errno))
-
+    except Exception as e:
+       print("Error", strerror(e.errno))
+       
 if __name__ == '__main__':
     num_args = len(sys.argv)
     if num_args == 2:
