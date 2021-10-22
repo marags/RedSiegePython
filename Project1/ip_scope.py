@@ -9,10 +9,10 @@ This tool accepts only a single IP address (xxx.xxx.xxx.xxx)
 This script requires that 'ipwhois' be installed within the Python 
 environment you are running this script in.
 
-This file can also be importate as a module and contains the following functions:
+This file can also be imported as a module and contains the following functions:
 
         *main(ip_address) - the main function of the script
-        *get_ip_info(ip_address) - returns a data as a list about the ip address through 'IPWhois'
+        *get_ip_info(ip_address) - returns requested data as a list about the ip address through 'IPWhois' api
         *print_results(ip_address, ownership, country, state, city, postal_code) - 
             displays results of a successful ip request from get_ip_info
 
@@ -28,14 +28,11 @@ def main(ip_address):
 
     try:
         ownership, country, state, city, postal_code = get_ip_info(ip_address)
-    except:
+    except Exception:
         sys.exit("You entered an invalid or non public IP address")
     else:
         print_results(ip_address, ownership, country, state, city, postal_code)
     
-    #ip_info = get_ip_info(ip_address)
-    #print_results(ip_address, ip_info[0], ip_info[1], ip_info[2], ip_info[3], ip_info[4])
-
 def get_ip_info(ip_address):
     """Gets ownership and geolocation data from ip_address
 
@@ -54,15 +51,6 @@ def get_ip_info(ip_address):
     results = obj.lookup_whois()
     
     return results['nets'][0]['description'], results['asn_country_code'], results['nets'][0]['state'], results['nets'][0]['city'], results['nets'][0]['postal_code']
-
-    # ownership = results['nets'][0]['description']
-    # country = results['asn_country_code']
-    # state = results['nets'][0]['state']
-    # city = results['nets'][0]['city']
-    # postal_code = results['nets'][0]['postal_code']
-
-    # return ownership, country, state, city, postal_code
-
 
 def print_results(ip_address, ownership, country, state, city, postal_code):
     print(f'''
