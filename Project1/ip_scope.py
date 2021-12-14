@@ -1,4 +1,3 @@
-
 """IP addess scope verification
 
 This script allows the user to enter a public IP Address to verify ownership
@@ -6,14 +5,11 @@ and geolocation of the address.
 
 This tool accepts only a single IP address (xxx.xxx.xxx.xxx)
 
-This script requires that 'ipwhois' be installed within the Python 
-environment you are running this script in.
-
 This file can also be imported as a module and contains the following functions:
 
         *main(ip_address) - the main function of the script
-        *get_ip_info(ip_address) - returns requested data as a list about the ip address through 'IPWhois' api
-        *print_results(ip_address, ownership, country, state, city, postal_code) - 
+        *get_ip_info(ip_address) - returns requested data as a dictionary about the ip address through 'IPWhois' api
+        *print_results() - 
             displays results of a successful ip request from get_ip_info
 
 ip_scope_file_read script is meant to be used with this script for multiple single
@@ -22,25 +18,20 @@ ip addresses read in from a file
 
 #!/usr/bin/env python3
 import sys, traceback
-from ipwhois import IPWhois
-from ipwhois.exceptions import IPDefinedError
+import requests
+import json
+import ipaddress
 
-def main(ip_address):
+def main(ip):
+    #IP conversion and check
+    geo_data = get_ip_info(ip)
+    print_results(geo_data)
 
-    try:
-        ownership, country, state, city, postal_code = get_ip_info(ip_address)
-    except IPDefinedError:
-        print("You entered an invalid or non public IP address")
-    except ValueError:
-        print(ip_address, 'is not a IPv4 or IPv6 address')
-    except Exception:
-        #For any other unexpected error
-        str = traceback.format_exc()
-        print(str)
-    else:
-        print_results(ip_address, ownership, country, state, city, postal_code)
-    
-def get_ip_info(ip_address):
+
+def check_ip_for_public(ip):
+    return "Private" if (ipaddress.ip_address(ip).is_private) else "Public"
+   
+def get_ip_info(ipv4):
     """Gets ownership and geolocation data from ip_address
 
     Parameters
@@ -50,25 +41,74 @@ def get_ip_info(ip_address):
 
     Returns
     -------
-    list
-        a list of strings containing the requested data:
-            ownership, country, state, city, postal_code
+    Dictionary
+        a dictionary of strings containing the requested data from the geo_data_keys list:
+            ip, ownership(org), continent, continent_code, country, country_code, region, city, timezone
     """
-    obj = IPWhois(ip_address)
-    results = obj.lookup_whois()
     
-    return results['nets'][0]['description'], results['asn_country_code'], results['nets'][0]['state'], results['nets'][0]['city'], results['nets'][0]['postal_code']
+    #geo_data_keys is a list of data to return from json object, add/remove keys as needed
+    geo_data_keys = ['ip','org','continent','continent_code','country','country_code','region','city','timezone'] 
 
-def print_results(ip_address, ownership, country, state, city, postal_code):
+    try:
+        address = "http://ipwhois.app/json/" + ipv4
+        r = requests.get(address)
+        data = json.loads(r.text)
+        
+        # Checking json success value
+        if data['success']:
+            
+            #### Uncomment if you want the entire json object ####
+            # return data
+            #### Uncomment if you want to print out json object ####
+            # print(json.dumps(data, indent=4, sort_keys=True))
+
+            return {key:data[key] for key in geo_data_keys if key in data}
+        else:
+            print(f"Request failed with {ipv4}")
+            print(f"Message: {data['message']}")
+            sys.exit()
+
+    except requests.exceptions.HTTPError as e:
+        print("An HTTP Error occured: ", e)
+    except requests.exceptions.ConnectionError as e:
+        print("An Error Connecting to IPWHOIS occured: ", e)
+    except requests.exceptions.Timeout as e:
+        print("Timeout Error: ", e)
+    except requests.exceptions.TooManyRedirects as e:
+        print("Too many redirects: ", e)
+    except requests.exceptions.RequestException as e:
+        print(e)
+    except Exception:
+        #For any other unexpected error
+        str = traceback.format_exc()
+        print(str)
+
+
+def print_results(geo_dict):
+    """Prints ownership and geolocation data requested
+
+    Parameters
+    ----------
+    geo_dict : dictionary
+        a dictionary with key value pairs of geolocation/ownership data
+
+    Returns
+    -------
+    NULL
+        prints data as requested under the geo_data_keys list
+            ip, ownership(org), continent, continent_code, country, country_code, region, city, timezone
+    """
+
     print(f'''
-    IP address: {ip_address}
-    Ownership: {ownership}
+    IP address: {geo_dict['ip']}
+    Ownership:  {geo_dict['org']}
 
     Geolocation data:
-        Country:  {country}
-        State:    {state}
-        City:     {city}
-        Zip Code: {postal_code}
+        Continent:    {geo_dict['continent']} ({geo_dict['continent_code']})
+        Country:      {geo_dict['country']} ({geo_dict['country_code']})
+        State/Region: {geo_dict['region']}
+        City:         {geo_dict['city']}
+        Timezone:     {geo_dict['timezone']}
     ''')
 
 
