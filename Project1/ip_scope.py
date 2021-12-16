@@ -23,7 +23,21 @@ import json
 import ipaddress
 
 def main(ip):
-    #IP conversion and check
+
+    #Validate ip provided is an ip address or range of ip addresses
+    if type(ip) == ipaddress.IPv4Address:
+        print("IPv4")
+    elif type(ip) == ipaddress.IPv6Address:
+        print("IPv6")
+    elif type(ip) == ipaddress.IPv4Network:
+        print("IPv4 NETWORK")
+    elif type(ip) == ipaddress.IPv6Network:
+        print("IPv6 Network")
+    else:
+        #raise exception or continue and print out invalid IP?
+        raise ip 
+        print(type(ip))
+
     geo_data = get_ip_info(ip)
     print_results(geo_data)
 
@@ -56,11 +70,8 @@ def validate_ip_address(address):
 
     # If address is neither type function will return ValueError but not raise the exception so that the program can output invalid address
     return ValueError(f"ValueError '{address}' does not appear to be an IPv4 or IPv6 address or network")
-
-# def check_ip_for_public(ip):
-#     return "Private" if (ipaddress.ip_address(ip).is_private) else "Public"
    
-def get_ip_info(ipv4):
+def get_ip_info(address):
     """Gets ownership and geolocation data from ip_address
 
     Parameters
@@ -79,9 +90,9 @@ def get_ip_info(ipv4):
     geo_data_keys = ['ip','org','continent','continent_code','country','country_code','region','city','timezone'] 
 
     try:
-        address = "http://ipwhois.app/json/" + ipv4
-        r = requests.get(address)
-        data = json.loads(r.text)
+        url = "http://ipwhois.app/json/" + address
+        request = requests.get(url)
+        data = json.loads(request.text)
         
         # Checking json success value
         if data['success']:
@@ -93,7 +104,7 @@ def get_ip_info(ipv4):
 
             return {key:data[key] for key in geo_data_keys if key in data}
         else:
-            print(f"Request failed with {ipv4}")
+            print(f"Request failed with {address}")
             print(f"Message: {data['message']}")
 
             # sys.exit()
