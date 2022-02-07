@@ -26,8 +26,8 @@ For the Expert Task here are two networks in CIDR notation:
 
 </div>
 
+<h2>Usage</h2>
 ```
-sh
 python3 ip_scope.py -h
 Usage: ip_scope_.py [-h] ip_addr
 
