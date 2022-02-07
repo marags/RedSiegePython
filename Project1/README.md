@@ -36,4 +36,4 @@ python3 ip_scope.py 131.91.4.55
 ```
 
 <h2>Example outputs:</h2>
-![](./example.png)
+![](example.png)
