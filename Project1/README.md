@@ -34,7 +34,6 @@ python3 ip_scope.py -h
 ```sh
 python3 ip_scope.py 131.91.4.55
 ```
-<div>
+
 <h2>Example outputs:</h2>
 ![](./example.png)
-</div>
