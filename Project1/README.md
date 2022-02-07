@@ -6,7 +6,7 @@ Week 1 - Verify IP Ownership / Geo-locate <br>
 Week 2 - Web Header Reporting <br>
 Week 3 - Brute Force <br>
 Week 4 - Pilfer for Passwords! <br>
-Week 5 - TBD <br>
+Week 5 - Living on the Land <br>
 Week 6 - Break and Catch up Week <br>
 Week 7 - TBD <br>
 Week 8 - TBD <br>
