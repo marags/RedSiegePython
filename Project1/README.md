@@ -29,13 +29,12 @@ For the Expert Task here are two networks in CIDR notation:
 <h2>Usage:</h2>
 ```sh
 python3 ip_scope.py -h
-usage: ip_scope.py [-h] ip_addr
-
-Geolocate an IP address
-
-positional arguments:
-  ip_addr     Look up a single IP Address (IPv4 or IPv6)
-
-optional arguments:
-  -h, --help  show this help message and exit
 ```
+<h2>Example command:</h2>
+```sh
+python3 ip_scope.py 131.91.4.55
+```
+<div>
+<h2>Example outputs:</h2>
+![](example.png)
+</div>
