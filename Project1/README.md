@@ -43,3 +43,5 @@ optional arguments:
 ```
 
 <h2>Example Output</h2>
+
+![](example.png)
