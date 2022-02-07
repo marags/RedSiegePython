@@ -21,23 +21,16 @@ import sys, traceback
 import requests
 import json
 import ipaddress
+import argparse
+
+parser = argparse.ArgumentParser(description="Geolocate an IP address")
+parser.add_argument("ip_addr", help="Look up a single IP Address (IPv4 or IPv6)")
+args = parser.parse_args()
+
 
 def main(ip):
-
     #Validate ip provided is an ip address or range of ip addresses
-    if type(ip) == ipaddress.IPv4Address:
-        print("IPv4")
-    elif type(ip) == ipaddress.IPv6Address:
-        print("IPv6")
-    elif type(ip) == ipaddress.IPv4Network:
-        print("IPv4 NETWORK")
-    elif type(ip) == ipaddress.IPv6Network:
-        print("IPv6 Network")
-    else:
-        #raise exception or continue and print out invalid IP?
-        raise ip 
-        print(type(ip))
-
+    validate_ip_address(ip)
     geo_data = get_ip_info(ip)
     print_results(geo_data)
 
@@ -153,11 +146,6 @@ def print_results(geo_dict):
 
 
 if __name__ == '__main__':
-    num_args = len(sys.argv)
-    if num_args == 2:
-        main(sys.argv[1])
-    elif num_args == 1:
-        sys.exit("Failed to provide IP address as argument")
-    else:
-        sys.exit("Too many arguments")
+    print(f"Locating IP {args.ip_addr}")
+    main(args.ip_addr)
         
